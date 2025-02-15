@@ -133,7 +133,7 @@ const EmergencyButton = () => {
             }
           }
 
-          const response = await fetch("http://localhost:5000/api/emergencyreport", {
+          const response = await fetch("https://safecrowd.onrender.com/api/emergencyreport", {
             method: "POST",
             body: formData,
           });
@@ -216,7 +216,7 @@ const ReportEmergency = () => {
     if (formData.file) data.append("file", formData.file);
 
     try {
-      const response = await fetch("http://localhost:5000/api/emergency", {
+      const response = await fetch("hhttps://safecrowd.onrender.com/api/emergency", {
         method: "POST",
         body: data,
       });
