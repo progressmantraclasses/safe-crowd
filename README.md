@@ -4,7 +4,7 @@ SafeCrowd is an advanced security and emergency response system designed to enha
 
 ## 🚀 Project Setup
 
-### Client-Side (Frontend)
+### Client-Side (Frontend) (In client directory)
 1. Install dependencies:
    ```bash
    npm install
@@ -15,7 +15,7 @@ SafeCrowd is an advanced security and emergency response system designed to enha
    ```
 3. Replace the development server backend link with the cloud backend link for production use.
 
-### Server 1 (Node.js Backend)
+### Server 1 (Node.js Backend)  (IN server copy directory)
 1. Install dependencies:
    ```bash
    npm install
@@ -25,7 +25,7 @@ SafeCrowd is an advanced security and emergency response system designed to enha
    node server.js
    ```
 
-### Server 2 (Python Backend)
+### Server 2 (Python Backend) (IN server copy directory)
 1. Install dependencies:
    ```bash
    pip install -r requirements.txt
