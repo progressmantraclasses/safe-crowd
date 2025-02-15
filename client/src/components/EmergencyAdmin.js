@@ -10,7 +10,7 @@ const EmergencyAdmin = () => {
   // Fetch emergency reports from backend
   const fetchReports = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/emergencyreports");
+      const response = await axios.get("https://safecrowd.onrender.com/api/emergencyreports");
       setReports(response.data);
       setReportCount(response.data.length);
     } catch (error) {
@@ -63,7 +63,7 @@ const EmergencyAdmin = () => {
                 <td className="py-2 px-4 border">
                  
                     <img
-                    src={`http://localhost:5000${report.imageUrl}`}
+                    src={`https://safecrowd.onrender.com${report.imageUrl}`}
                       alt="Emergency"
                       className="h-16 w-16 object-cover rounded"
                     />
