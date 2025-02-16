@@ -1,76 +1,92 @@
-import React from "react";
-import { Menu, X, Users, Shield, Camera, Mail } from 'lucide-react';
-import CCTVFeed from "./CCTVFeed";
-import Heatmap from "./Heatmap";
+import React, { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
+
 const Dashboard = () => {
-     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [reports, setReports] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  const fetchReports = async () => {
+    try {
+      const response = await fetch("https://safecrowd.onrender.com/api/emergency");
+      const data = await response.json();
+      setReports(data);
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+    }
+  };
+
+  const deleteReport = async (id) => {
+    try {
+      const response = await fetch(`https://safecrowd.onrender.com/api/emergency/${id}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        setReports(reports.filter(report => report._id !== id));
+        alert("Report deleted successfully");
+      } else {
+        alert("Failed to delete report");
+      }
+    } catch (error) {
+      console.error("Error deleting report:", error);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
-        {/* Navbar */}
-                    <nav className="bg-black shadow-md text-white py-4 px-6 flex justify-between items-center">
-                      <h1 className="text-xl font-bold">CrowdSafe</h1>
-                      <div className="hidden md:flex space-x-6">
-                        <a href="/" className="hover:text-gray-300">Home</a>
-                        <a href="/admin" className="hover:text-gray-300">Admin</a>
-                        <a href="/heatmap" className="hover:text-gray-300">Heatmaps</a>
-                        <a href="/cctv" className="hover:text-gray-300">CCTV</a>
-                        <a href="/contact" className="hover:text-gray-300">Contact</a>
-                      </div>
-                      <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                        {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                      </button>
-                    </nav>
-    <div className="p-5">
-      <h1 className="text-3xl font-bold">Crowd Security Dashboard</h1>
-      <div className="grid grid-cols-2 gap-4">
-        <CCTVFeed />
-        <Heatmap />
-      </div>
-    </div>
-     {/* Footer */}
-     <footer className="bg-gray-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">About Us</h3>
-              <p className="text-gray-400">
-                Leading provider of crowd management solutions for safer public spaces.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white">Home</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Features</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Documentation</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2">
-                <li className="text-gray-400">Email: info@crowdsafe.com</li>
-                <li className="text-gray-400">Phone: (555) 123-4567</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="px-4 py-2 rounded-l-lg w-full text-gray-900"
-                />
-                <button className="bg-blue-600 px-4 py-2 rounded-r-lg hover:bg-blue-700">
-                  Subscribe
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
-            <p>© 2025 CrowdSafe. All rights reserved.</p>
-          </div>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <nav className="bg-black shadow-md text-white py-4 px-6 flex justify-between items-center">
+        <h1 className="text-xl font-bold">CrowdSafe</h1>
+        <div className="hidden md:flex space-x-6">
+          <a href="/" className="hover:text-gray-300">Home</a>
+          <a href="/admin" className="hover:text-gray-300">Admin</a>
+          <a href="/heatmap" className="hover:text-gray-300">Heatmaps</a>
+          <a href="/cctv" className="hover:text-gray-300">CCTV</a>
+          <a href="/contact" className="hover:text-gray-300">Contact</a>
         </div>
-      </footer>
+        <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </nav>
+      
+      <h1 className="text-3xl font-bold text-center mb-6">Admin Dashboard</h1>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4">Total Reports: {reports.length}</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="p-2 border">Contact</th>
+                <th className="p-2 border">Type</th>
+                <th className="p-2 border">Description</th>
+                <th className="p-2 border">File</th>
+                <th className="p-2 border">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {reports.map((report) => (
+                <tr key={report._id} className="text-center border">
+                  <td className="p-2 border">{report.contactNumber}</td>
+                  <td className="p-2 border">{report.emergencyType}</td>
+                  <td className="p-2 border">{report.description}</td>
+                  <td className="p-2 border">
+                  <img
+                    src={`http://localhost:5000/${report.filePath}`}
+                      alt="Emergency"
+                      className="h-16 w-16 object-cover rounded"
+                    />
+                  </td>
+                  <td className="p-2 border">
+                    <button onClick={() => deleteReport(report._id)} className="bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
