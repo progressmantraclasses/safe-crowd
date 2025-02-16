@@ -73,7 +73,7 @@ const Dashboard = () => {
                   <td className="p-2 border">{report.description}</td>
                   <td className="p-2 border">
                   <img
-                    src={`http://localhost:5000/${report.filePath}`}
+                    src={`https://safecrowd.onrender.com/${report.filePath}`}
                       alt="Emergency"
                       className="h-16 w-16 object-cover rounded"
                     />
