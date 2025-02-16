@@ -167,7 +167,7 @@ const ReportEmergency = () => {
     contactNumber: "",
     emergencyType: "",
     description: "",
-    file: null,
+    filePath: "",
   });
 
   const handleChange = (e) => {
@@ -184,10 +184,10 @@ const ReportEmergency = () => {
     data.append("contactNumber", formData.contactNumber);
     data.append("emergencyType", formData.emergencyType);
     data.append("description", formData.description);
-    if (formData.file) data.append("file", formData.file);
+    if (formData.filePath) data.append("file", formData.filePath);
 
     try {
-      const response = await fetch("hhttps://safecrowd.onrender.com/api/emergency", {
+      const response = await fetch("https://safecrowd.onrender.com/api/emergency", {
         method: "POST",
         body: data,
       });
@@ -259,7 +259,6 @@ const ReportEmergency = () => {
   
   );
 };
-
 const InputField = ({ label, type, required, accept }) => (
   <div>
     <label className="block text-sm font-medium text-gray-700">{label}</label>
