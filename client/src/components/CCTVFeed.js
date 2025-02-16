@@ -5,7 +5,7 @@ import Webcam from "react-webcam";
 import axios from "axios";
 
 // Connect to Flask-SocketIO
-const socket = io("https://iitl.onrender.com");
+const socket = io("http://localhost:5000");
 
 const CCTVFeed = () => {
   const [alert, setAlert] = useState(null);
@@ -34,7 +34,7 @@ const CCTVFeed = () => {
       formData.append("image", blob);
 
       try {
-        const response = await axios.post("https://iitl.onrender.com/detect", formData);
+        const response = await axios.post("http://localhost:5000/detect", formData);
         const detectedItems = response.data;
         setDetectedObjects(detectedItems);
         console.log("Detected Objects:", detectedItems);
